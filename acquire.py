@@ -2,6 +2,7 @@ import os
 import math
 import pandas as pd
 import requests
+from env import user, password, host
 
 def get_swapi_api(endpoint):
     # If endpoint csv exists, use it

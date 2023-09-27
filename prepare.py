@@ -1,48 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
-def get_sql(
-    user=user,
-    password=password,
-    host=host,
-    filename="store.csv",
-    database="tsa_item_demand",
-):
-    """
-    This function acquires data from a SQL database and caches it locally, or uses the already cached file.
-
-    :param user: The username for accessing the MySQL database
-    :param password: The password is unique per user saved in env
-    :param host: The host parameter is the address of the server where the database is hosted
-    :return: The function `get_sql` is returning a pandas DataFrame
-    """
-    # if cached data exists
-    if os.path.isfile(filename):
-        # read data from cached csv
-        df = pd.read_csv(filename)
-        # Print size
-        print(f"Total rows: {df.shape[0]}")
-        print(f"Total columns: {df.shape[1]}")
-    # wrangle from sql db if not cached
-    else:
-        # read sql query into df
-        df = pd.read_sql(
-            """
-                SELECT * FROM sales
-                JOIN items ON sales.item_id = items.item_id
-                JOIN stores ON sales.store_id = stores.store_id;
-                """,
-            f"mysql+pymysql://{user}:{password}@{host}/{database}",
-        )
-        # cache data locally
-        df.to_csv(filename, index=False)
-        # print total rows and columns
-        print(f"Total rows: {df.shape[0]}")
-        print(f"Total columns: {df.shape[1]}")
-    return df
-
+from env import user, password, host
 
 def check_columns(df, reports=False, graphs=False):
     """
